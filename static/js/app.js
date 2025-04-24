@@ -3,21 +3,26 @@ function buildMetadata(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // get the metadata field
-
-
+    let metadata = data.metadata;
+    console.log(metadata);
     // Filter the metadata for the object with the desired sample number
-  
+    let results = metadata.filter(data => data.id == sample);
+    console.log(results);
 
+    // Get the first result in the array since the results are an array of arrays
+    let result = results[0];
     // Use d3 to select the panel with id of `#sample-metadata`
-
+    let panel = d3.select("#sample-metadata");
 
     // Use `.html("") to clear any existing metadata
-
+    panel.html("")
 
     // Inside a loop, you will need to use d3 to append new
     // tags for each key-value in the filtered metadata.
-
-  });
+    Object.entries(result).forEach(([key, value]) => {
+      panel.append("h6").text(`${key}: ${value}`);
+    })
+  })
 }
 
 // function to build both charts
@@ -56,7 +61,7 @@ function init() {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // Get the names field
-
+    buildMetadata(data.names[0]);
 
     // Use d3 to select the dropdown with id of `#selDataset`
 
